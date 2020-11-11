@@ -12,16 +12,13 @@ const val BOT_TOKEN = "NzcxOTUzMjQzMzAzNTc1NTUz.X5znew.PWeM8zE5qaIU0Ou5mMD7hU0xi
 suspend fun main() {
     bot(BOT_TOKEN) {
         commands {
-            command("ping") {
-
-                reply("pong")
+            command("price"){
+                val tickerName = this.words[this.words.size - 1]
+                val res = getTickerPrice(tickerName)
+                reply(res.testString)
             }
-            command("news"){
-                val getCommand = this.words
-                val tickerName = this.words[-1]
-                print(tickerName)
-                val res = getTickerPrice("APPL")
-                reply("GORD")
+            command("news") {
+
             }
             command("insult"){
                 val insults = arrayOf("you gee", "lata bic", "gottem", "nani noo", "wtff dad")
