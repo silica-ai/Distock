@@ -18,7 +18,9 @@ suspend fun main() {
                 reply(res.testString)
             }
             command("news") {
-
+                val tickerName = this.words[this.words.size - 1]
+                val newsLinks = getRecentNews(tickerName)
+                reply(newsLinks.testString)
             }
             command("insult"){
                 val insults = arrayOf("you gee", "lata bic", "gottem", "nani noo", "wtff dad")
