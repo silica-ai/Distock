@@ -17,6 +17,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation 'org.jsoup:jsoup:1.11.3'
     compile group: 'com.yahoofinance-api', name: 'YahooFinanceAPI', version: '3.15.0'
+    compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.1'
 }
 
 compileKotlin {

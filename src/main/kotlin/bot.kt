@@ -5,22 +5,28 @@ import com.jessecorbett.diskord.dsl.commands
 import com.jessecorbett.diskord.util.words
 import com.jessecorbett.diskord.dsl.*
 import org.jsoup.Jsoup
+import org.jsoup.helper.StringUtil
 import kotlin.random.Random
 
-const val BOT_TOKEN = "NzcxOTUzMjQzMzAzNTc1NTUz.X5znew.PWeM8zE5qaIU0Ou5mMD7hU0xiAo"
 
 suspend fun main() {
-    bot(BOT_TOKEN) {
+    val tf = TwitterTalk()
+    bot(Config.BOT_TOKEN) {
         commands {
-            command("price"){
+            command("price") {
                 val tickerName = this.words[this.words.size - 1]
                 val res = getTickerPrice(tickerName)
-                reply(res.testString)
+                reply(res.text)
             }
             command("news") {
                 val tickerName = this.words[this.words.size - 1]
                 val newsLinks = getRecentNews(tickerName)
-                reply(newsLinks.testString)
+                reply(newsLinks.text)
+            }
+            command("tweets") {
+                val tweets = getStockTweets(this.words[this.words.size - 1], tf).map { m -> m.text }.toList()
+                val response = StringUtil.join(tweets, "\n")
+                reply(response)
             }
             command("insult"){
                 val insults = arrayOf("you gee", "lata bic", "gottem", "nani noo", "wtff dad")

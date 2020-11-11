@@ -1,8 +1,14 @@
 import org.jsoup.Jsoup
-import yahoofinance.Stock
+import twitter4j.Query
+import twitter4j.Status
+import twitter4j.TweetEntity
 import yahoofinance.YahooFinance
+import java.util.stream.Collectors
+import kotlin.streams.toList
 
-data class Message(val testString : String)
+
+data class Message(val text : String)
+
 
 fun getTickerPrice(ticker : String) : Message{
     // make a request to yahoo finance to get price
@@ -36,4 +42,24 @@ fun getRecentNews(ticker : String) : Message {
     }
 
     return Message(reply)
+}
+
+fun getStockTweets(ticker: String, tf: TwitterTalk) : List<Message> {
+    var twitter = tf.getInstance()
+    val query = Query(ticker)
+    val result = twitter.search(query)
+
+    var tweets = result.tweets.stream()
+        .map {t -> getTwitterUrl(t) }
+        .map {Message(it)}
+        .limit(7)
+        .toList()
+
+    return tweets
+
+}
+
+fun getTwitterUrl(tweet : Status) : String {
+    val url = "https://twitter.com/${tweet.user.screenName}/status/${tweet.getId()}"
+    return url
 }
