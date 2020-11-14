@@ -13,10 +13,14 @@ suspend fun main() {
     val tf = TwitterTalk()
     bot(Config.BOT_TOKEN) {
         commands {
-            command("price") {
+            command("stock") {
                 val tickerName = this.words[this.words.size - 1]
                 val res = getTickerPrice(tickerName)
-                reply(res.text)
+                if(res.embed == null) {
+                    reply(res.text)
+                } else{
+                    reply(res.text, res.embed?.embed())
+                }
             }
             command("news") {
                 val tickerName = this.words[this.words.size - 1]
@@ -29,7 +33,7 @@ suspend fun main() {
                 reply(response)
             }
             command("insult"){
-                val insults = arrayOf("you gee", "lata bic", "gottem", "nani noo", "wtff dad")
+                val insults = arrayOf("lata bic", "gottem", "nani noo", "wtff dad")
 
                 reply(insults[Random.nextInt(0, insults.size)])
             }

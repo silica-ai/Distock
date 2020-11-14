@@ -1,21 +1,48 @@
+import com.jessecorbett.diskord.api.model.Embed
+import com.jessecorbett.diskord.dsl.CombinedMessageEmbed
+import com.jessecorbett.diskord.dsl.footer
+import com.jessecorbett.diskord.dsl.message
+import com.jessecorbett.diskord.util.Colors
 import org.jsoup.Jsoup
 import twitter4j.Query
 import twitter4j.Status
-import twitter4j.TweetEntity
+import yahoofinance.Stock
 import yahoofinance.YahooFinance
-import java.util.stream.Collectors
+import yahoofinance.histquotes.Interval
+import java.lang.StringBuilder
 import kotlin.streams.toList
 
 
-data class Message(val text : String)
+data class Message(val text : String, val embed : CombinedMessageEmbed? = null)
 
 
-fun getTickerPrice(ticker : String) : Message{
+fun getTickerPrice(ticker : String) : Message {
     // make a request to yahoo finance to get price
     val tickerStock = YahooFinance.get(ticker) ?: return Message("Stock $ticker not available")
     val price = tickerStock.getQuote().price ?: return Message("Stock price for $ticker not available")
+    var desc = StringBuilder("")
+    val quote = tickerStock.getQuote(true)
 
-    return Message("Ticker price of $ticker is $price")
+    desc.append( "${tickerStock.stockExchange}\n\n")
+
+    desc.append("Prev Close:    ${quote.previousClose}")
+    desc.append("   Open: ${quote.open}\n")
+    desc.append("Day Low/High:  ${quote.dayLow}/${quote.dayHigh}\n")
+    desc.append("Volume:        %,d\n".format(quote.volume))
+    desc.append("Avg Volume:    %,d\n".format(quote.avgVolume))
+
+
+    val change = tickerStock.getQuote().getChangeInPercent().toDouble()
+    val changeSign = if (change > 0) "+" else ""
+
+    val embedding = CombinedMessageEmbed().apply {
+            title = "${tickerStock.name} (${tickerStock.symbol}) is at $price (%$changeSign$change)"
+            text = "Ticker price of $ticker is $price (%$change)"
+            description = desc.toString()
+            color = if (change < 0) Colors.RED else Colors.GREEN
+        }
+
+    return Message("", embedding)
 
 }
 
