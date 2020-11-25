@@ -32,6 +32,11 @@ suspend fun main() {
                 val response = StringUtil.join(tweets, "\n")
                 reply(response)
             }
+            command("graph") {
+                reply("Testing1")
+                getGraph()
+                reply("Testing2")
+            }
             command("insult"){
                 val insults = arrayOf("lata bic", "gottem", "nani noo", "wtff dad")
 

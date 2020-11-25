@@ -14,6 +14,8 @@ class Config {
 
         const val BOT_TOKEN = "NzcxOTUzMjQzMzAzNTc1NTUz.X5znew.PWeM8zE5qaIU0Ou5mMD7hU0xiAo"
 
+        const val IMG_TOKEN = "ee110f135e355e28d6feb7f08289ef61"
+
     }
 
 }

@@ -32,6 +32,7 @@ fun getTickerPrice(ticker : String) : Message {
     desc.append("Avg Volume:    %,d\n".format(quote.avgVolume))
 
 
+
     val change = tickerStock.getQuote().getChangeInPercent().toDouble()
     val changeSign = if (change > 0) "+" else ""
 
