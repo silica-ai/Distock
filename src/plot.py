@@ -1,20 +1,3 @@
-# import pandas as pd
-# import yfinance as yf
-# from yahoofinancials import YahooFinancials
-# import matplotlib.pyplot as plt
-# import os
-#
-# ticker = "BTC-USD"
-#
-# newtime = yf.download(ticker, period="1mo", interval="1d")
-# newtime['Adj Close'].plot()
-# plt.xlabel("Date")
-# plt.ylabel("Adjusted")
-# plt.title("Microsoft Price data")
-# plt.style.use('dark_background')
-# plt.show()
-
-
 import plotly.graph_objects as go
 import yfinance as yf
 import os
