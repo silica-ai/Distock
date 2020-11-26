@@ -33,9 +33,8 @@ suspend fun main() {
                 reply(response)
             }
             command("graph") {
-                reply("Testing1")
-                getGraph()
-                reply("Testing2")
+                val chart = getGraph()
+                reply(chart.text, chart.embed?.embed())
             }
             command("insult"){
                 val insults = arrayOf("lata bic", "gottem", "nani noo", "wtff dad")
