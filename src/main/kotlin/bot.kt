@@ -33,7 +33,10 @@ suspend fun main() {
                 reply(response)
             }
             command("graph") {
-                val chart = getGraph()
+                val interval = this.words[this.words.size - 1]
+                val period = this.words[this.words.size - 2]
+                val tickerName = this.words[this.words.size - 3]
+                val chart = getGraph(tickerName, period, interval)
                 reply(chart.text, chart.embed?.embed())
             }
             command("insult"){

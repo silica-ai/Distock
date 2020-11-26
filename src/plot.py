@@ -18,20 +18,23 @@
 import plotly.graph_objects as go
 import yfinance as yf
 import os
+import sys
 from yahoofinancials import YahooFinancials
 import pandas as pd
 from datetime import datetime
 
-newtime = yf.download("TSLA", period="1mo", interval="1d")
-# print(newtime)
+ticker = sys.argv[1]
+period = sys.argv[2]
+interval = sys.argv[3]
+title = "{0} {1} {2} Chart".format(ticker, period, interval)
+
+newtime = yf.download(ticker, period=period, interval=interval)
+
 dates = []
 currentDirectory = os.getcwd()
 path = currentDirectory + "/src/images/fig1.jpg"
 for i, j in newtime.iterrows():
     dates.append(i)
-
-
-#df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv')
 
 fig = go.Figure(data=[go.Candlestick(x=dates,
                 open=newtime['Open'],
@@ -40,10 +43,8 @@ fig = go.Figure(data=[go.Candlestick(x=dates,
                 close=newtime['Close'])])
 
 fig.update_layout(
-    title='TSLA 1d Candlesticks',
+    title=title,
     yaxis_title='Price',
     xaxis_rangeslider_visible=False)
-
-#fig.show()
 
 fig.write_image(path)

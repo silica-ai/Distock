@@ -11,13 +11,13 @@ import java.nio.file.Path
 import java.util.*
 
 
-fun getGraph() : Message {
+fun getGraph(ticker: String, period : String, interval : String) : Message {
 
 
     //println(System.getProperty("user.dir"))
     val userDirectory = System.getProperty("user.dir")
     val path = "$userDirectory/src/plot.py"
-    val process = Runtime.getRuntime().exec("python3 $path")
+    val process = Runtime.getRuntime().exec("python3 $path $ticker $period $interval")
     process.waitFor()
 
     val imageB = get64BaseImage("$userDirectory/src/images/fig1.jpg")
