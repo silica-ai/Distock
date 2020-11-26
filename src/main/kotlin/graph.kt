@@ -9,12 +9,17 @@ import java.nio.file.FileSystem
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
+import yahoofinance.YahooFinance
+import kotlin.collections.HashMap
 
 
 fun getGraph(ticker: String, period : String, interval : String) : Message {
 
+    val check = checkInput(ticker, period, interval)
 
-    //println(System.getProperty("user.dir"))
+    if (!check.text.equals("valid"))
+        return check
+
     val userDirectory = System.getProperty("user.dir")
     val path = "$userDirectory/src/plot.py"
     val process = Runtime.getRuntime().exec("python3 $path $ticker $period $interval")
@@ -43,4 +48,37 @@ fun getGraph(ticker: String, period : String, interval : String) : Message {
 fun get64BaseImage(file: String): String? {
     val fileContent: ByteArray = Files.readAllBytes(Path.of(file))
     return Base64.getEncoder().encodeToString(fileContent)
+}
+
+fun checkInput(ticker: String, period : String, interval : String) : Message {
+    var periodMap = setOf("1d", "5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max")
+    var intervalMap = setOf("1m","2m","5m","15m","30m","60m","90m","1h","1d","5d","1wk","1mo","3mo")
+    var check = ""
+    var valid = true
+
+    if(!YahooFinance.get(ticker).isValid){
+        check += "Stock $ticker not available\n"
+        valid = false
+    }
+    if(!periodMap.contains(period)){
+        check += "Invalid period\n"
+        valid = false
+    }
+    if(!intervalMap.contains(interval)){
+        check += "Invalid interval\n"
+        valid = false
+    }
+    if(!valid)
+        check += "\nFormat should be:\n.graph symbol period interval\n"
+
+    val embedding = CombinedMessageEmbed().apply {
+        description = check
+        color = Colors.RED
+    }
+
+    if(check.isEmpty())
+        return Message("valid")
+
+    return Message("", embedding)
+
 }

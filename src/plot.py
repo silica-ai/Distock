@@ -23,7 +23,7 @@ from yahoofinancials import YahooFinancials
 import pandas as pd
 from datetime import datetime
 
-ticker = sys.argv[1]
+ticker = (sys.argv[1]).upper()
 period = sys.argv[2]
 interval = sys.argv[3]
 title = "{0} {1} {2} Chart".format(ticker, period, interval)
