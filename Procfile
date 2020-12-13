@@ -1,0 +1,1 @@
+web: java -Xmx256M -jar build/libs/shadow.jar
