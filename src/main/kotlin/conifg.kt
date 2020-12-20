@@ -3,7 +3,8 @@
 class Config {
 
     companion object {
-
+        //BTW: These API Keys don't work :)
+        
         const val CONSUMER_KEY = "TQg3CBu2vKi679VLGeDsgUkxn"
 
         const val CONSUMER_SECRET = "0nPzbL9setGQFVij8ove5H2xvzpaPDPhvxY0uTccvytHJIeEjr"
